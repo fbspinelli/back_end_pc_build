@@ -1,5 +1,4 @@
-import {urlGetListaDeIdsJogos, urlGetDetalhesJogo, urlPostBd} from "./urls/urls"
-
+const urls = require('./urls/urls')
 const axios = require ("axios");
 const express = require ("express")
 const { parse } = require("himalaya");
@@ -78,62 +77,73 @@ app.get("/teste", (req, res) => {
     res.send("Oi sou seu servidor :)")
 })
 
-const funcao = async() =>{
-    let contador = 0
-    let listaIdsENomesJogos = undefined;
-    try{
-        listaIdsENomesJogos = await axios.get(urlGetListaDeIdsJogos)
-    }catch(e){
-        console.log("Falhei na requisição lista". e)
-    }
+// const funcao = async() =>{
+//     let contador = 0
+//     let listaIdsENomesJogos;
+//     try{
+//         listaIdsENomesJogos = await axios.get(urls.GetListaDeIdsJogos)
+//     }catch(e){
+//         console.log("Falhei na requisição lista". e)
+//     }
 
-    for(const item of listaIdsENomesJogos.data.applist.apps){
-        if(contador <= 190){
-            console.log("vou chamar os detalhes do jogo, contador: " + contador)
-            const idJogo = item.appid
-            const objetoJogo = await axios.get(urlGetDetalhesJogo + idJogo) 
-            const detalheJogo = objetoJogo?.data[idJogo]?.data
-            if (objetoJogo?.data?.[idJogo]?.success === true){
+//     for(const item of listaIdsENomesJogos.data.applist.apps){
+//         if(contador <= 190){
+//             console.log("vou chamar os detalhes do jogo, contador: " + contador)
+//             const idJogo = item.appid
+//             const objetoJogo = await axios.get(urls.GetDetalhesJogo + idJogo) 
+//             const detalheJogo = objetoJogo?.data[idJogo]?.data
+//             if (objetoJogo?.data?.[idJogo]?.success === true){
 
                 
-                if(detalheJogo?.type === "game"){
-                    console.log("Nome:", detalheJogo?.name);
-                    console.log("achei um jogo");
-                    let jogo = {
-                        id_jogo_steam: detalheJogo?.steam_appid,
-                        nome: detalheJogo?.name.replace(regex, ''),
-                        imagem: detalheJogo?.header_image,
-                        preco: detalheJogo?.price_overview?.final_formatted,
-                    }
+//                 if(detalheJogo?.type === "game"){
+//                     console.log("Nome:", detalheJogo?.name);
+//                     console.log("achei um jogo");
+//                     let jogo = {
+//                         id_jogo_steam: detalheJogo?.steam_appid,
+//                         nome: detalheJogo?.name.replace(regex, ''),
+//                         imagem: detalheJogo?.header_image,
+//                         preco: detalheJogo?.price_overview?.final_formatted,
+//                     }
 
-                    if (detalheJogo?.pc_requirements?.minimum) {
-                        jogo.requisitosminimos = `${extraiRequisitos(detalheJogo?.pc_requirements?.minimum)}`
-                    }
+//                     if (detalheJogo?.pc_requirements?.minimum) {
+//                         jogo.requisitosminimos = `${extraiRequisitos(detalheJogo?.pc_requirements?.minimum)}`
+//                     }
         
-                    if (detalheJogo?.pc_requirements?.recommended) {
-                        jogo.requisitosrecomendados = `${extraiRequisitos(detalheJogo?.pc_requirements?.recommended)}`
-                    }
+//                     if (detalheJogo?.pc_requirements?.recommended) {
+//                         jogo.requisitosrecomendados = `${extraiRequisitos(detalheJogo?.pc_requirements?.recommended)}`
+//                     }
 
-                    console.log(jogo.nome)
+//                     console.log(jogo.nome)
 
-                    try{
-                        await axios.post(urlPostBd, jogo)
-                        console.log("Inseriu")
-                    }
-                    catch(e){
-                        console.log("Falhei no post BD", e)
-                    }
+//                     try{
+//                         await axios.post(urlPostBd, jogo)
+//                         console.log("Inseriu")
+//                     }
+//                     catch(e){
+//                         console.log("Falhei no post BD", e)
+//                     }
                     
-                }  
-            }
-            contador ++
-        }
-        else{
-            const dataAtualMaisSeisMin = new Date().getTime() + 360000
-            while(new Date().getTime() <= dataAtualMaisSeisMin);
-            contador = 0
-        }                      
-    }
-}
+//                 }  
+//             }
+//             contador ++
+//         }
+//         else{
+//             const dataAtualMaisSeisMin = new Date().getTime() + 360000
+//             while(new Date().getTime() <= dataAtualMaisSeisMin);
+//             contador = 0
+//         }                      
+//     }
+// }
 // funcao()
+//{"applist":{"apps":[
+//id procurado 2124910
+
+const descobre = async() => {
+  const resposta = await axios.get(urls.GetListaDeIdsJogos)
+  const pos = resposta.data.applist.apps.map(o => {o.appid; console.log(o.appid)}).indexOf(2126830);
+  console.log(pos)
+}
+
+descobre();
+
 
