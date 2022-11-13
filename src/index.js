@@ -1,4 +1,4 @@
-const urls = require('./urls/urls')
+const urls = require('../urls/urls')
 const axios = require ("axios");
 const express = require ("express")
 const { parse } = require("himalaya");
