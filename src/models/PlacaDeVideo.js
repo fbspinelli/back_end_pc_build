@@ -1,15 +1,13 @@
-import urls from '../urls/urls.js'
+import urls from '../config/dbUrls.js'
 import axios from 'axios';
 const regex = new RegExp('([()])', 'ig');
 
-console.log(urls.g);
-
-// axios.get(urlGetAllPlacas).then((retorno) => {
-//     const nomesDePlacas = retorno.data.items; //.map(placa => placa.gpu);
-//     let requisito = 'Radeon RX 580 series 8GB'.replace(regex,'');
-//     let resultado = pesquisaUmaPlacaNaLista(requisito,nomesDePlacas);
-//     console.log(resultado);
-// })
+axios.get(urls.getAllPlacasDeVideo).then((retorno) => {
+    const nomesDePlacas = retorno.data.items; //.map(placa => placa.gpu);
+    let requisito = 'Radeon RX 580 series 8GB'.replace(regex,'');
+    let resultado = pesquisaUmaPlacaNaLista(requisito,nomesDePlacas);
+    console.log(resultado);
+})
  
 function calculaQuantidadePalavrasEmComum(frase1, frase2){
     let palavrasFrase1 = frase1.toUpperCase().split(' ');

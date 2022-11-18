@@ -1,6 +1,11 @@
+//controller deve conter logicas referente as entradas de dados
 class PlacaDeVideoController {
     static calculaPlacaDeVideo = (req, res) => {
-        res.status(200).send('Você chegou no controller da placa de video')
+
+        //req.body.placas.length > 3
+
+
+        res.status(200).json({GPU : "aqui objeto da API google", CPU : "aqui objeto da API google"});
     }
 }
 
