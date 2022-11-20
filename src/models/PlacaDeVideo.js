@@ -1,73 +1,53 @@
 import urls from '../config/dbUrls.js'
 import axios from 'axios';
-const regex = new RegExp('([()])', 'ig');
+import helperString from '../helper/helperString.js'
+const parenteses = new RegExp('([()])', 'ig');
+const espacosEparenteses = new RegExp('([()])|\s', 'ig');
 
-axios.get(urls.getAllPlacasDeVideo).then((retorno) => {
-    const nomesDePlacas = retorno.data.items.map(placa => placa.gpu);
-    let requisito = 'GTX Titan'.replace(regex,'');
-    let resultado = pesquisaUmaPlacaNaLista(requisito,nomesDePlacas);
-    console.log(resultado);
-})
- 
-function calculaQuantidadePalavrasEmComum(frase1, frase2){
-    let palavrasFrase1 = frase1.toUpperCase().split(' ');
-    let palavrasFrase2 = frase2.toUpperCase().split(' ');
-    let quantidadePalavrasEmComum = 0;
+let listaPlacasBD;
 
-    palavrasFrase1.forEach((palavraFraseBase) => {
-        palavrasFrase2.forEach((palavraFraseAlvo) => {
-            if (palavraFraseBase === palavraFraseAlvo){
-                quantidadePalavrasEmComum ++;
-            }
+async function obterListaPlacasBD(){
+    await axios.get(urls.getAllPlacasDeVideo).then((retorno) => {
+        listaPlacasBD = retorno.data.items.map(placa => {
+            placa.gpu = placa.gpu.replace(parenteses,'');
+            return placa;
         })
     })
-    return quantidadePalavrasEmComum;
 }
 
-function calculaQuantidadeDePalavrasSemCorrespondencia(frase1, frase2){
-    let palavrasFrase1 = frase1.toUpperCase().split(' ');
-    let palavrasFrase2 = frase2.toUpperCase().split(' ');
-    let quantidadePalavrasErradas = 0;
-
-    palavrasFrase1.forEach((palavraFrase1) => {
-        palavrasFrase2.forEach((palavraFrase2) => {
-            if(palavraFrase1 !== palavraFrase2){
-                quantidadePalavrasErradas++;
-            }
-        })
-    })
-    return quantidadePalavrasErradas;
-}
-
-function pesquisaUmaPlacaNaLista(stringPlacaAlvo, listaPlacas){
-    let melhorCorrespondencia = 0;
-    let melhoresCorrespondencias = [];
-    
-    
-    listaPlacas.forEach((nomePlacaDaLista, index) => {
-        let palavrasEmComum = calculaQuantidadePalavrasEmComum(nomePlacaDaLista,stringPlacaAlvo);
-        if(palavrasEmComum > 0 && palavrasEmComum >= melhorCorrespondencia){
-            melhoresCorrespondencias.push({
-                nomePlacaDaLista,
-                palavrasEmComum
-            });
-            melhorCorrespondencia = palavrasEmComum;
+async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
+    if(listaPlacasBD === undefined){
+        await obterListaPlacasBD();
+    }
+    stringPlacaRequisito = stringPlacaRequisito.replace(espacosEparenteses,'');
+    let melhorCorrespondecia = 1;
+    let melhoresResultados = [];
+    listaPlacasBD.forEach(placa => {
+        let resultadoAnalise = helperString.comparaDuasFrases(placa.gpu,stringPlacaRequisito);
+        if(resultadoAnalise.quantidadePalavrasEncontrada >= melhorCorrespondecia){
+            melhoresResultados.push({placa,resultadoAnalise});
+            melhorCorrespondecia = resultadoAnalise.quantidadePalavrasEncontrada;
+        }
+    });
+    melhoresResultados = melhoresResultados.filter(placaComAnalise => {
+        if(placaComAnalise.resultadoAnalise.quantidadePalavrasEncontrada == melhorCorrespondecia){
+            return placaComAnalise
         }
     })
-    
-    melhoresCorrespondencias = melhoresCorrespondencias.filter((jsonPlacaVideo) => jsonPlacaVideo.palavrasEmComum === melhorCorrespondencia)
-
-    //eliminar o que tem mais palavras erradas
-    let indexMelhor = 0;
-    let menorQuantErros = calculaQuantidadeDePalavrasSemCorrespondencia(melhoresCorrespondencias[0].nomePlacaDaLista,stringPlacaAlvo)
-    melhoresCorrespondencias.forEach((frase1, index) => {
-        let palavrasErradas = calculaQuantidadeDePalavrasSemCorrespondencia(frase1.nomePlacaDaLista,stringPlacaAlvo);
-        if (palavrasErradas < menorQuantErros){
-            menorQuantErros = palavrasErradas;
-            indexMelhor = index;
+    melhoresResultados = melhoresResultados.reduce((anterior, atual) => {
+        if(anterior.resultadoAnalise.quantidadePalavrasErradas < atual.resultadoAnalise.quantidadePalavrasErradas){
+            return anterior;
+        }
+        else{
+            return atual;
         }
     })
-    return melhoresCorrespondencias[indexMelhor];
+    return (Array.isArray(melhoresResultados) ? melhoresResultados[0].placa : melhoresResultados.placa);
+
+
 }
 
-export default {calculaQuantidadePalavrasEmComum, pesquisaUmaPlacaNaLista}
+pesquisaUmaPlacaNaListaBD('NVIDIA GeForce GTX 1060 or AMD Radeon RX 580 - DirectX 12.0').then((retorno) => console.log(retorno));
+
+
+export default {pesquisaUmaPlacaNaListaBD}

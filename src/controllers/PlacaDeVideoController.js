@@ -1,13 +1,17 @@
+import modelPlacaVideo from '../models/PlacaDeVideo.js'
 //controller deve conter logicas referente as entradas de dados
-class PlacaDeVideoController {
-    static calculaPlacaDeVideo = (req, res) => {
 
-        //req.body.placas.length > 3
+function calculaPlacaDeVideo (req, res){
+
+    let jsonRetorno
+    jsonRetorno = modelPlacaVideo.pesquisaUmaPlacaNaListaBD(req.body.requisitos[0].Gpu);
+
+    //tratar or no requisito GPU
 
 
-        res.status(200).json({GPU : "aqui objeto da API google", CPU : "aqui objeto da API google"});
-    }
+    res.status(200).json(jsonRetorno);
 }
 
-export default PlacaDeVideoController
+
+export default calculaPlacaDeVideo
 
