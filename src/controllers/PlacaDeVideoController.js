@@ -3,15 +3,16 @@ import modelPlacaVideo from '../models/PlacaDeVideo.js'
 
 function calculaPlacaDeVideo (req, res){
 
-    let jsonRetorno
-    jsonRetorno = modelPlacaVideo.pesquisaUmaPlacaNaListaBD(req.body.requisitos[0].Gpu);
+    let jsonRetorno = {};
+    let requisitos = req.body.requisitos;
+    let nomesPlacas =  modelPlacaVideo.converteRequisitosEmArrayComNomesPlacas(requisitos);
+    //if(requisitos.length() > 5){};
 
-    //tratar or no requisito GPU
 
 
-    res.status(200).json(jsonRetorno);
+    return res.status(200).json(jsonRetorno);
 }
 
 
-export default calculaPlacaDeVideo
+export default {calculaPlacaDeVideo}
 

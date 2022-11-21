@@ -35,7 +35,6 @@ async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
             return placaComAnalise
         }
     })
-    //talvez mudar para sort e retornar sem o if da linha 46
     let resultado = melhoresResultados.reduce((anterior, atual) => {
         if(anterior.resultadoAnalise.quantidadePalavrasErradas < atual.resultadoAnalise.quantidadePalavrasErradas){
             return anterior;
@@ -49,7 +48,7 @@ async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
 
 }
 
-function calculaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
+function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
     const date = new Date();
     const anoAtual = date.getFullYear();
     
@@ -72,19 +71,24 @@ function calculaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
         }
         
     }
+
+    function converteRequisitosEmArrayComNomesPlacas (listaRequisitos){
+
+    }
 }
 
-async function teste(){
-    let placasDoRequisito = [];
-    await pesquisaUmaPlacaNaListaBD('Radeon HD 7990').then(retorno => placasDoRequisito.push(retorno));
-    await pesquisaUmaPlacaNaListaBD('Radeon RX 470 4GB').then(retorno => placasDoRequisito.push(retorno));
-    await pesquisaUmaPlacaNaListaBD('GeForce GTX Titan').then(retorno => placasDoRequisito.push(retorno));
-    let placa = await calculaMelhorPlacaComCriterioLancamento(placasDoRequisito)
-    return placa;
-}
 
-teste().then(retorno => {
-    console.log(retorno)
-})
+// async function teste(){
+//     let placasDoRequisito = [];
+//     await pesquisaUmaPlacaNaListaBD('Radeon HD 7990').then(retorno => placasDoRequisito.push(retorno));
+//     await pesquisaUmaPlacaNaListaBD('Radeon RX 470 4GB').then(retorno => placasDoRequisito.push(retorno));
+//     await pesquisaUmaPlacaNaListaBD('GeForce GTX Titan').then(retorno => placasDoRequisito.push(retorno));
+//     let placa = await retornaMelhorPlacaComCriterioLancamento(placasDoRequisito)
+//     return placa;
+// }
 
-export default {pesquisaUmaPlacaNaListaBD}
+// teste().then(retorno => {
+//     console.log(retorno)
+// })
+
+export default {pesquisaUmaPlacaNaListaBD,retornaMelhorPlacaComCriterioLancamento,converteRequisitosEmArrayComNomesPlacas}
