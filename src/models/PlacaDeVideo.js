@@ -36,7 +36,7 @@ async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
         }
     })
     //talvez mudar para sort e retornar sem o if da linha 46
-    melhoresResultados = melhoresResultados.reduce((anterior, atual) => {
+    let resultado = melhoresResultados.reduce((anterior, atual) => {
         if(anterior.resultadoAnalise.quantidadePalavrasErradas < atual.resultadoAnalise.quantidadePalavrasErradas){
             return anterior;
         }
@@ -44,7 +44,7 @@ async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
             return atual;
         }
     })
-    return (Array.isArray(melhoresResultados) ? melhoresResultados[0].placa : melhoresResultados.placa);
+    return resultado.placa;
 
 
 }
@@ -53,26 +53,38 @@ function calculaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
     const date = new Date();
     const anoAtual = date.getFullYear();
     
-    let placasAtendemCriterioAno = listaPlacasBD.filter(placa =>  {
-        placa.data_lancamento >= (anoAtual - 4)
+    let placasAtendemCriterioAno = listaPlacasBD.filter(placa => placa.data_lancamento >= (anoAtual - 4))
+
+    let placaMaisForte = listaPlacasRequisitos.reduce( (anterior, atual) => {
+        return anterior.gflops < atual.gflops ? atual : anterior;
     })
-    placaMaisForte = listaPlacasRequisitos.reduce( (anterior, atual) => {
-        anterior.gflops < atual.gflops ? atual : anterior;
-    })
+
     placasAtendemCriterioAno = placasAtendemCriterioAno.sort((anterior, atual) => {
         if (anterior.gflops > atual.gflops ) return 1;
         if (anterior.gflops < atual.gflops ) return -1;
         return 0;
     })
-    let indexResultadoPlaca
-    placasAtendemCriterioAno.forEach((placa, index) => {
-        if(placa.gflops >= placaMaisForte.gflops) indexResultadoPlaca = index;
-    })
-    return placasAtendemCriterioAno[indexResultadoPlaca];
-    
+
+    let index;
+    for (index = 0; index < placasAtendemCriterioAno.length; index++) {
+        if(placasAtendemCriterioAno[index].gflops >= placaMaisForte.gflops){
+            return placasAtendemCriterioAno[index]
+        }
+        
+    }
 }
 
-pesquisaUmaPlacaNaListaBD('3060tI').then((retorno) => console.log(retorno));
+async function teste(){
+    let placasDoRequisito = [];
+    await pesquisaUmaPlacaNaListaBD('Radeon HD 7990').then(retorno => placasDoRequisito.push(retorno));
+    await pesquisaUmaPlacaNaListaBD('Radeon RX 470 4GB').then(retorno => placasDoRequisito.push(retorno));
+    await pesquisaUmaPlacaNaListaBD('GeForce GTX Titan').then(retorno => placasDoRequisito.push(retorno));
+    let placa = await calculaMelhorPlacaComCriterioLancamento(placasDoRequisito)
+    return placa;
+}
 
+teste().then(retorno => {
+    console.log(retorno)
+})
 
 export default {pesquisaUmaPlacaNaListaBD}
