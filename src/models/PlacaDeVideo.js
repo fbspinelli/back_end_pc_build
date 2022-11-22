@@ -3,6 +3,8 @@ import axios from 'axios';
 import helperString from '../helper/helperString.js'
 const parenteses = new RegExp('([()])', 'ig');
 const espacosEparenteses = new RegExp('([()])|\s', 'ig');
+const regexSplit = new RegExp(' or | ou | / ', 'ig');
+
 
 let listaPlacasBD;
 
@@ -44,8 +46,6 @@ async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
         }
     })
     return resultado.placa;
-
-
 }
 
 function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
@@ -63,19 +63,18 @@ function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
         if (anterior.gflops < atual.gflops ) return -1;
         return 0;
     })
-
-    let index;
-    for (index = 0; index < placasAtendemCriterioAno.length; index++) {
-        if(placasAtendemCriterioAno[index].gflops >= placaMaisForte.gflops){
-            return placasAtendemCriterioAno[index]
-        }
-        
-    }
-
-    function converteRequisitosEmArrayComNomesPlacas (listaRequisitos){
-
-    }
+    return placasAtendemCriterioAno.find((placa) => placa.gflops >= placaMaisForte.gflops )
 }
+
+function converteRequisitosEmArrayComNomesPlacas (requisitos){
+    let listaNomesPlacas = [];
+    requisitos.forEach((requisito) => {
+        let nomesPlacas = requisito.Gpu.split(regexSplit)
+        nomesPlacas.forEach(nome => listaNomesPlacas.push(nome))
+    })
+    return listaNomesPlacas;
+}
+
 
 
 // async function teste(){
@@ -91,4 +90,8 @@ function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
 //     console.log(retorno)
 // })
 
-export default {pesquisaUmaPlacaNaListaBD,retornaMelhorPlacaComCriterioLancamento,converteRequisitosEmArrayComNomesPlacas}
+export default {
+    pesquisaUmaPlacaNaListaBD,
+    retornaMelhorPlacaComCriterioLancamento,
+    converteRequisitosEmArrayComNomesPlacas
+}
