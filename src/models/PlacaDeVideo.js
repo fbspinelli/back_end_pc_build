@@ -75,21 +75,6 @@ function converteRequisitosEmArrayComNomesPlacas (requisitos){
     return listaNomesPlacas;
 }
 
-
-
-// async function teste(){
-//     let placasDoRequisito = [];
-//     await pesquisaUmaPlacaNaListaBD('Radeon HD 7990').then(retorno => placasDoRequisito.push(retorno));
-//     await pesquisaUmaPlacaNaListaBD('Radeon RX 470 4GB').then(retorno => placasDoRequisito.push(retorno));
-//     await pesquisaUmaPlacaNaListaBD('GeForce GTX Titan').then(retorno => placasDoRequisito.push(retorno));
-//     let placa = await retornaMelhorPlacaComCriterioLancamento(placasDoRequisito)
-//     return placa;
-// }
-
-// teste().then(retorno => {
-//     console.log(retorno)
-// })
-
 export default {
     pesquisaUmaPlacaNaListaBD,
     retornaMelhorPlacaComCriterioLancamento,
