@@ -2,7 +2,6 @@ import urls from '../config/Urls.js'
 import axios from 'axios';
 import helperString from '../helper/helperString.js'
 const parenteses = new RegExp('([()])', 'ig');
-const espacosEparenteses = new RegExp('([()])|\s', 'ig');
 const regexSplit = new RegExp(' or | ou | / ', 'ig');
 
 
@@ -22,7 +21,7 @@ async function obterListaPlacasBD(){
 
 async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
     await obterListaPlacasBD();
-    stringPlacaRequisito = stringPlacaRequisito.replace(espacosEparenteses,'');
+    stringPlacaRequisito = stringPlacaRequisito.replace(parenteses,'');
     let melhorCorrespondecia = 1;
     let melhoresResultados = [];
     listaPlacasBD.forEach(placa => {
@@ -75,10 +74,10 @@ function converteRequisitosEmArrayNomesPlacas (requisitos){
     return listaNomesPlacas;
 }
 
-async function recomendaPlacaVideoComBaseRequisitos(jsonRequisitos){
+async function recomendaPlacaVideoComBaseRequisitos(listaRequisitos){
     let listaPlacasTipoBD = [];
     
-    let nomesPlacas =  converteRequisitosEmArrayNomesPlacas(jsonRequisitos);
+    let nomesPlacas =  converteRequisitosEmArrayNomesPlacas(listaRequisitos);
     for(let nomePlaca of nomesPlacas){
         listaPlacasTipoBD.push(await pesquisaUmaPlacaNaListaBD(nomePlaca));
     }

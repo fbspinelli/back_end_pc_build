@@ -1,11 +1,11 @@
-function comparaDuasFrases(frase, fraseSemEspaco){
-    frase = frase.toUpperCase().split(' ');
-    fraseSemEspaco = fraseSemEspaco.toUpperCase();
+function comparaDuasFrases(objetoProcurado, texto){
+    objetoProcurado = objetoProcurado.toUpperCase().split(' ');
+    texto = texto.toUpperCase();
     let quantidadePalavrasEncontrada = 0;
     let quantidadePalavrasErradas = 0;
 
-    frase.forEach(palavra => {
-        if(fraseSemEspaco.includes(palavra)){
+    objetoProcurado.forEach(palavra => {
+        if(texto.includes(palavra)){
             quantidadePalavrasEncontrada++;
         }
         else{
