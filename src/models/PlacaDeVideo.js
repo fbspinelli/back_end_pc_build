@@ -1,4 +1,4 @@
-import urls from '../config/dbUrls.js'
+import urls from '../config/Urls.js'
 import axios from 'axios';
 import helperString from '../helper/helperString.js'
 const parenteses = new RegExp('([()])', 'ig');
@@ -66,7 +66,7 @@ function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
     return placasAtendemCriterioAno.find((placa) => placa.gflops >= placaMaisForte.gflops )
 }
 
-function converteRequisitosEmArrayComNomesPlacas (requisitos){
+function converteRequisitosEmArrayNomesPlacas (requisitos){
     let listaNomesPlacas = [];
     requisitos.forEach((requisito) => {
         let nomesPlacas = requisito.Gpu.split(regexSplit)
@@ -75,8 +75,16 @@ function converteRequisitosEmArrayComNomesPlacas (requisitos){
     return listaNomesPlacas;
 }
 
+async function recomendaPlacaVideoComBaseRequisitos(jsonRequisitos){
+    let listaPlacasTipoBD = [];
+    
+    let nomesPlacas =  converteRequisitosEmArrayNomesPlacas(jsonRequisitos);
+    for(let nomePlaca of nomesPlacas){
+        listaPlacasTipoBD.push(await pesquisaUmaPlacaNaListaBD(nomePlaca));
+    }
+    return retornaMelhorPlacaComCriterioLancamento(listaPlacasTipoBD);
+}
+
 export default {
-    pesquisaUmaPlacaNaListaBD,
-    retornaMelhorPlacaComCriterioLancamento,
-    converteRequisitosEmArrayComNomesPlacas
+    recomendaPlacaVideoComBaseRequisitos
 }

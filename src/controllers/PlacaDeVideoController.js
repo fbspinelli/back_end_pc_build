@@ -2,14 +2,12 @@ import modelPlacaVideo from '../models/PlacaDeVideo.js'
 //controller deve conter logicas referente as entradas de dados
 //VALIDE TOKEN
 async function calculaPlacaDeVideo (req, res){
-
-    let listaPlacasBD = [];
-    //if(requisitos.length() > 5){ERRO!!}; TRATAR COM TRY CATCH
-    let nomesPlacas =  modelPlacaVideo.converteRequisitosEmArrayComNomesPlacas(req.body.requisitos);
-    for(let nomePlaca of nomesPlacas){
-        listaPlacasBD.push(await modelPlacaVideo.pesquisaUmaPlacaNaListaBD(nomePlaca));
+    let jsonRetorno
+    try {
+        jsonRetorno = await modelPlacaVideo.recomendaPlacaVideoComBaseRequisitos(req.body.requisitos);
+    } catch (error) {
+        return res.status(500).json({erro:'Erro ao calcular placa'});
     }
-    let jsonRetorno = modelPlacaVideo.retornaMelhorPlacaComCriterioLancamento(listaPlacasBD)
     return res.status(200).json(jsonRetorno);
 }
 
