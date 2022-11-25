@@ -2,7 +2,7 @@ import urls from '../config/Urls.js'
 import axios from 'axios';
 import helperString from '../helper/helperString.js'
 const parenteses = new RegExp('([()])', 'ig');
-const regexSplit = new RegExp(' or | ou | / ', 'ig');
+const regexSplit = new RegExp(' or | ou | / |,', 'ig');
 
 
 let listaPlacasBD;
@@ -31,6 +31,7 @@ async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
             melhorCorrespondecia = resultadoAnalise.quantidadePalavrasEncontrada;
         }
     });
+    if(melhoresResultados.length === 0)return null;
     melhoresResultados = melhoresResultados.filter(placaComAnalise => {
         if(placaComAnalise.resultadoAnalise.quantidadePalavrasEncontrada == melhorCorrespondecia){
             return placaComAnalise
@@ -79,7 +80,13 @@ async function recomendaPlacaVideoComBaseRequisitos(listaRequisitos){
     
     let nomesPlacas =  converteRequisitosEmArrayNomesPlacas(listaRequisitos);
     for(let nomePlaca of nomesPlacas){
-        listaPlacasTipoBD.push(await pesquisaUmaPlacaNaListaBD(nomePlaca));
+        let retornoPesquisa = await pesquisaUmaPlacaNaListaBD(nomePlaca);
+        if(!(retornoPesquisa === null)){
+            listaPlacasTipoBD.push(retornoPesquisa);
+        }
+    }
+    if(!(listaPlacasTipoBD.length)){
+        return {erro: "Nenhuma placa encontrada"}
     }
     return retornaMelhorPlacaComCriterioLancamento(listaPlacasTipoBD);
 }

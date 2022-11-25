@@ -29,7 +29,7 @@ function somaArmazenamentoRequisitos (listaRequisitos){
         return parseInt(rom.replace(conjuntoNaoNumerico,''));
     })
     let totalGBs = listaValoresRom.reduce((acumulador, atual) => acumulador + atual);
-    return ssdsGB.find(ssd => ssd >= totalGBs);
+    return (ssdsGB.find(ssd => ssd >= totalGBs)) + 'GB';
 }
 
 
