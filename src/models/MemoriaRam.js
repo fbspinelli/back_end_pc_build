@@ -1,4 +1,3 @@
-const parenteses = new RegExp('([()])', 'ig');
 const espacos = / /g;
 const regexRam = /\d+MB|\d+GB/g ;
 const conjuntoNaoNumerico = /[^0-9]/g;
@@ -30,6 +29,9 @@ function encontraMaiorMemoriaDosRequisitos (listaRequisitos){
     }
 }
 
+export default {
+    encontraMaiorMemoriaDosRequisitos
+}
 
 
 const requisitos = {"requisitos" : [

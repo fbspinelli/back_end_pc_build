@@ -10,3 +10,7 @@ async function retornaUmProdutoDaApiShopping(stringNomeProduto){
     let resultadosGoogle = await axios.get(urls.apiGoogle,{params});
     resultadosGoogle = resultadosGoogle.shopping_results[0];
 }
+
+export default {
+    retornaUmProdutoDaApiShopping
+}
