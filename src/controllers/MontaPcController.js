@@ -14,7 +14,11 @@ async function montaPC(req, res){
         let armazenamento = modelArmazenamento.somaArmazenamentoRequisitos(req.body.requisitos);
         //armazenamento = await modelApiGoogle.retornaUmProdutoDaApiShopping('SSD '+ armazenamento);
     
-        let jsonRetorno = {title: gpu.gpu + '/'+ ram + '/' + armazenamento};
+        let jsonRetorno = {
+            placa: {title:gpu.gpu},
+            ram: {title:ram},
+            rom: {title:armazenamento}
+        };
         return res.status(200).json(jsonRetorno)
     }
     catch(e){
