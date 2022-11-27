@@ -20,6 +20,9 @@ async function obterListaPlacasBD(){
 }
 
 async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
+    if (stringPlacaRequisito === null || stringPlacaRequisito === undefined){
+        return null;
+    }
     await obterListaPlacasBD();
     stringPlacaRequisito = stringPlacaRequisito.replace(parenteses,'');
     let melhorCorrespondecia = 1;
@@ -33,9 +36,14 @@ async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
     });
     if(melhoresResultados.length === 0)return null;
     melhoresResultados = melhoresResultados.filter(placaComAnalise => {
-        if(placaComAnalise.resultadoAnalise.quantidadePalavrasEncontrada == melhorCorrespondecia){
+        if(placaComAnalise.resultadoAnalise.quantidadePalavrasEncontrada === melhorCorrespondecia){
             return placaComAnalise
         }
+    })
+    melhoresResultados = melhoresResultados.sort((anterior, atual) => {
+        if (anterior.placa.gflops > atual.placa.gflops ) return 1;
+        if (anterior.placa.gflops < atual.placa.gflops ) return -1;
+        return 0;
     })
     let resultado = melhoresResultados.reduce((anterior, atual) => {
         if(anterior.resultadoAnalise.quantidadePalavrasErradas < atual.resultadoAnalise.quantidadePalavrasErradas){
@@ -52,11 +60,11 @@ function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
     const date = new Date();
     const anoAtual = date.getFullYear();
     
-    let placasAtendemCriterioAno = listaPlacasBD.filter(placa => placa.data_lancamento >= (anoAtual - 4))
-
     let placaMaisForte = listaPlacasRequisitos.reduce( (anterior, atual) => {
         return anterior.gflops < atual.gflops ? atual : anterior;
     })
+
+    let placasAtendemCriterioAno = listaPlacasBD.filter(placa => placa.data_lancamento >= (anoAtual - 6))
 
     placasAtendemCriterioAno = placasAtendemCriterioAno.sort((anterior, atual) => {
         if (anterior.gflops > atual.gflops ) return 1;
@@ -67,10 +75,15 @@ function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
 }
 
 function converteRequisitosEmArrayNomesPlacas (requisitos){
+    if(!(Array.isArray(requisitos) && requisitos.length > 0)){
+        return [];
+    }
     let listaNomesPlacas = [];
     requisitos.forEach((requisito) => {
-        let nomesPlacas = requisito.Gpu.split(regexSplit)
-        nomesPlacas.forEach(nome => listaNomesPlacas.push(nome))
+        if (requisito.Gpu != null && requisito.Gpu != undefined && requisito.Gpu != '' ){
+            let nomesPlacas = requisito.Gpu.split(regexSplit)
+            nomesPlacas.forEach(nome => listaNomesPlacas.push(nome))
+        }
     })
     return listaNomesPlacas;
 }
@@ -79,6 +92,9 @@ async function recomendaPlacaVideoComBaseRequisitos(listaRequisitos){
     let listaPlacasTipoBD = [];
     
     let nomesPlacas =  converteRequisitosEmArrayNomesPlacas(listaRequisitos);
+    if(nomesPlacas.length === 0){
+        throw 'Nenhum requisito GPU encontrado'
+    }
     for(let nomePlaca of nomesPlacas){
         let retornoPesquisa = await pesquisaUmaPlacaNaListaBD(nomePlaca);
         if(!(retornoPesquisa === null)){
@@ -86,7 +102,7 @@ async function recomendaPlacaVideoComBaseRequisitos(listaRequisitos){
         }
     }
     if(!(listaPlacasTipoBD.length)){
-        return {erro: "Nenhuma placa encontrada"}
+        throw 'Nenhuma placa encontrada no BD';
     }
     return retornaMelhorPlacaComCriterioLancamento(listaPlacasTipoBD);
 }

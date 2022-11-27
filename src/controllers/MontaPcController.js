@@ -22,7 +22,7 @@ async function montaPC(req, res){
         return res.status(200).json(jsonRetorno)
     }
     catch(e){
-        return res.status(500).json({erro:"Erro ao montar o pc"});
+        return res.status(500).json({erro:e});
     }
     
     
