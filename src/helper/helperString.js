@@ -5,11 +5,18 @@ function comparaDuasFrases(objetoProcurado, texto){
     let quantidadePalavrasErradas = 0;
 
     objetoProcurado.forEach(palavra => {
-        if(texto.includes(palavra)){
-            quantidadePalavrasEncontrada++;
+        if(palavra.length > 1){
+            if(texto.includes(palavra)){
+                quantidadePalavrasEncontrada++;
+            }
+            else{
+                quantidadePalavrasErradas++
+            }
         }
         else{
-            quantidadePalavrasErradas++
+            let regexLetraAvulsa = new RegExp(` ${palavra} `);
+            let resultadoMatch = texto.match(regexLetraAvulsa);
+            resultadoMatch != null ? quantidadePalavrasEncontrada++ : quantidadePalavrasErradas++;
         }
     })
     return {quantidadePalavrasEncontrada,quantidadePalavrasErradas}
