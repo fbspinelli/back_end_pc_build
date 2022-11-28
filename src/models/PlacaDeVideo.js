@@ -2,7 +2,7 @@ import urls from '../config/Urls.js'
 import axios from 'axios';
 import helperString from '../helper/helperString.js'
 const parenteses = new RegExp('([()])', 'ig');
-const regexSplit = new RegExp(' or | ou | / |,', 'ig');
+const regexSplit = new RegExp(' or | ou |/|,|\\|', 'ig');
 
 
 let listaPlacasBD;
