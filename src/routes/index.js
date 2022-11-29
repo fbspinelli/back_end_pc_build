@@ -2,6 +2,8 @@ import express from 'express';
 import jogosRoutes from './JogoRoutes.js';
 import placaRoutes from './PlacaDeVideoRoutes.js';
 import montaPcRoutes from './MontaPcRoutes.js';
+import usuarioRoutes from './UsuarioRoutes.js'
+import favoritoRoutes from './FavoritoRoutes.js'
 
 
 const routes = (app) => {
@@ -10,9 +12,11 @@ const routes = (app) => {
     })
     app.use(
         express.json(),
-        jogosRoutes, //para direcionar as requisões que não seja para o '/' para cá
-        placaRoutes, //para direcionar as requisões que não seja para o 'jogosRoutes' e '/' para cá
-        montaPcRoutes
+        jogosRoutes,
+        placaRoutes, 
+        montaPcRoutes,
+        usuarioRoutes,
+        favoritoRoutes
     )
 
 }

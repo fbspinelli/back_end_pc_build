@@ -1,5 +1,9 @@
 import axios from 'axios'
+import bcrypt from 'bcrypt'
 import urls from '../config/Urls.js'
+const salt = bcrypt.genSaltSync(10);
+
+
 
 function usuario (nome, email, senha){
     let usuario = new Object();
@@ -31,21 +35,26 @@ async function isEmailCadastrado(email){
     } catch (error) {
         throw 'Erro ao listar usuarios do BD'
     }
-    results.items.forEach(usuario => {
-        if (usuario.email === email){
-            return true
-        }
-    });
-    return false
+    return !(results.data.items.every(usuario => usuario.email != email));
+}
+
+async function buscaUsuarioPorEmail(email){
+    let results;
+    try {
+        results = await axios.get(urls.getAllUsers);
+    } catch (error) {
+        throw 'Erro ao listar usuarios do BD'
+    }
+    return results.data.items.find(usuario => usuario.email === email);
 }
 
 async function cadastrarUsuario (nome, email, senha){
-    if(!isEmailCadastrado(email)){
-        //criptografar senha
-        let usuario = usuario(nome, email, senha);
+    if(! await isEmailCadastrado(email)){
+        senha = bcrypt.hashSync(senha, salt);
+        let user = usuario(nome, email, senha);
         let retorno;
         try {
-            retorno = await axios.post(urls.postUser,usuario);
+            retorno = await axios.post(urls.postUser, user);
         } catch (error) {
             throw 'Erro cadastrar user no BD';
         }
@@ -56,6 +65,14 @@ async function cadastrarUsuario (nome, email, senha){
     };
 }
 
-export default {cadastrarUsuario}
+async function usuarioPossuiPermissao(email,senha){
+    let usuario = await buscaUsuarioPorEmail(email);
+    if((usuario != undefined) && bcrypt.compareSync(senha,usuario.senha)){
+        return true
+    }
+    return false
+}
+
+export default {cadastrarUsuario, usuarioPossuiPermissao, buscaUsuarioPorEmail}
 
 
