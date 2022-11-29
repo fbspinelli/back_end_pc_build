@@ -5,7 +5,10 @@ const parenteses = new RegExp('([()])', 'ig');
 const regexSplit = new RegExp(' or | ou |/|,|\\|', 'ig');
 
 
-let listaPlacasBD;
+let cache = {
+    listaPlacasBD:undefined,
+    listaFavoritos:undefined
+}; 
 
 async function obterListaPlacasBD(){
     if(listaPlacasBD === undefined){

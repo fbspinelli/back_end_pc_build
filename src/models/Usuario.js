@@ -67,8 +67,12 @@ async function cadastrarUsuario (nome, email, senha){
 
 async function usuarioPossuiPermissao(email,senha){
     let usuario = await buscaUsuarioPorEmail(email);
-    if((usuario != undefined) && bcrypt.compareSync(senha,usuario.senha)){
-        return true
+    try {
+        if((usuario != undefined) && bcrypt.compareSync(senha,usuario.senha)){
+            return usuario
+        }
+    } catch(er){
+        throw 'Falha ao autenticar senha ou e-mail'
     }
     return false
 }

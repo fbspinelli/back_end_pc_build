@@ -1,4 +1,6 @@
-import app from './src/app.js' //quando eh import precisa da extensao arquivo
+import dotenv from 'dotenv';
+dotenv.config();
+import app from './src/app.js'; //quando eh import precisa da extensao arquivo
 
 
 var args = process.argv;
