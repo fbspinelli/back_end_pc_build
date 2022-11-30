@@ -6,20 +6,19 @@ const regexSplit = new RegExp(' or | ou |/|,|\\|', 'ig');
 
 
 let cache = {
-    listaPlacasBD:undefined,
-    listaFavoritos:undefined
+    listaPlacasBD:undefined
 }; 
 
 async function obterListaPlacasBD(){
-    if(listaPlacasBD === undefined){
+    if(cache.listaPlacasBD === undefined){
         await axios.get(urls.getAllPlacasDeVideo).then((retorno) => {
-            listaPlacasBD = retorno.data.items.map(placa => {
+            cache.listaPlacasBD = retorno.data.items.map(placa => {
                 placa.gpu = placa.gpu.replace(parenteses,'');
                 return placa;
             })
         })
     }
-    return listaPlacasBD;
+    return cache.listaPlacasBD;
 }
 
 async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
@@ -30,7 +29,7 @@ async function pesquisaUmaPlacaNaListaBD(stringPlacaRequisito){
     stringPlacaRequisito = stringPlacaRequisito.replace(parenteses,'');
     let melhorCorrespondecia = 1;
     let melhoresResultados = [];
-    listaPlacasBD.forEach(placa => {
+    cache.listaPlacasBD.forEach(placa => {
         let resultadoAnalise = helperString.comparaDuasFrases(placa.gpu,stringPlacaRequisito);
         if(resultadoAnalise.quantidadePalavrasEncontrada >= melhorCorrespondecia){
             melhoresResultados.push({placa,resultadoAnalise});
@@ -67,7 +66,7 @@ function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
         return anterior.gflops < atual.gflops ? atual : anterior;
     })
 
-    let placasAtendemCriterioAno = listaPlacasBD.filter(placa => placa.data_lancamento >= (anoAtual - 6))
+    let placasAtendemCriterioAno = cache.listaPlacasBD.filter(placa => placa.data_lancamento >= (anoAtual - 6))
 
     placasAtendemCriterioAno = placasAtendemCriterioAno.sort((anterior, atual) => {
         if (anterior.gflops > atual.gflops ) return 1;
