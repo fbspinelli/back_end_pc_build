@@ -4,7 +4,7 @@ const urls =  {
     getSingleUser : 'https://g4673849dbf8477-qwkkduaklu8amhgz.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/usuario/',
     getAllUsers :'https://g4673849dbf8477-qwkkduaklu8amhgz.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/usuario/',
     postUser : 'https://g4673849dbf8477-qwkkduaklu8amhgz.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/usuario/',
-    postFavorito : ''
+    postFavorito : 'https://g4673849dbf8477-qwkkduaklu8amhgz.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/favorito/'
 
 
 }
