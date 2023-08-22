@@ -22,7 +22,9 @@
     "himalaya": "^1.1.0",
     "jsonwebtoken": "^8.5.1",
     "morgan-body": "^2.6.8",
-    "steamapi": "^2.2.0"
+    "steamapi": "^2.2.0",
+    "swagger-autogen": "^2.23.5",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
