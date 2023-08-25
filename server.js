@@ -1,8 +1,7 @@
 import dotenv from 'dotenv';
-dotenv.config();
 import app from './src/app.js'; //quando eh import precisa da extensao arquivo
 
-
+dotenv.config();
 var args = process.argv;
 let port = args[2] || 3000
 //const port = 3000; //or process.env.PORT

@@ -5,9 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
-    "debug": "nodemon --inspect server.js",
-    "prod": "nodemon server.js 80",
+    "dev": "node swagger.js && nodemon server.js",
+    "debug": "node swagger.js && nodemon --inspect server.js",
+    "prod": "node swagger.js && node server.js 80",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
