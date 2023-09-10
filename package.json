@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "debug": "nodemon --inspect server.js",
-    "prod": "nodemon server.js 80",
+    "prod": "node server.js 80",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
