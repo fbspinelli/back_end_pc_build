@@ -3,6 +3,21 @@ import axios from 'axios'
 import urls from '../config/Urls.js';
 
 async function favoritaPc (req, res){
+  /*#swagger.description = 'Endpoint para favoritar uma configuração montada'
+    #swagger.parameters['Object'] = {
+      in: 'body',
+      required: true,
+      schema: {
+        usuario: {
+          email: 'string'
+        },
+        pecas : {exemplo : "string"},
+        tipo : "string" ,
+        jogos : {exemplo : "string"},
+      }
+    }
+    #swagger.security = [{"jwt": []}]
+  */
   try {
     let usuario_id;
     if(req.body?.usuario?.email === undefined) throw 'E-mail usuario não informado';

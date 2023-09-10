@@ -7,9 +7,7 @@ import usuarioRoutes from './UsuarioRoutes.js';
 import favoritoRoutes from './FavoritoRoutes.js';
 import swaggerFile from './../../swagger_output.json' assert { type: "json" };
 
-
 const routes = (app) => {
-    app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile))
     app.use(
         express.json(),
         jogosRoutes,
@@ -18,7 +16,7 @@ const routes = (app) => {
         usuarioRoutes,
         favoritoRoutes
     )
-
+    app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 }
 
 export default routes

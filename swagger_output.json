@@ -2,27 +2,67 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "API app PC build",
+    "description": "API utilizada pelo app mobile"
   },
-  "host": "localhost:3000",
-  "basePath": "/",
-  "schemes": [
-    "http"
+  "host": "",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "",
+      "description": ""
+    }
   ],
+  "schemes": [],
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "tokenjwt",
+      "in": "header"
+    }
+  },
   "paths": {
     "/favoritaPc": {
       "post": {
-        "description": "",
+        "description": "Endpoint para favoritar uma configuração montada",
         "parameters": [
           {
-            "name": "body",
+            "name": "Object",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "usuario": {
-                  "example": "any"
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                },
+                "pecas": {
+                  "type": "object",
+                  "properties": {
+                    "exemplo": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                },
+                "tipo": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "jogos": {
+                  "type": "object",
+                  "properties": {
+                    "exemplo": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
                 }
               }
             }
@@ -35,7 +75,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
       }
     },
     "/atualizarListaJogos": {
@@ -104,16 +149,31 @@
     },
     "/usuario/cadastro": {
       "post": {
-        "description": "",
+        "description": "Endpoint para cadastrar usuário",
         "parameters": [
           {
-            "name": "body",
+            "name": "usuario",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "usuario": {
-                  "example": "any"
+                  "type": "object",
+                  "properties": {
+                    "nome": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "senha": {
+                      "type": "string",
+                      "example": "senha descriptografada"
+                    }
+                  }
                 }
               }
             }
@@ -121,26 +181,69 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Usuário cadastrado com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "nome": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Erro interno",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "erro": {
+                  "type": "string",
+                  "example": "Descrição erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
     },
     "/usuario/autentica": {
       "post": {
-        "description": "",
+        "description": "Endpoint obter token com duração de 60 minutos",
         "parameters": [
           {
-            "name": "body",
+            "name": "usuario",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "usuario": {
-                  "example": "any"
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "exemplo@email.com"
+                    },
+                    "senha": {
+                      "type": "string",
+                      "example": "Senha"
+                    }
+                  }
                 }
               }
             }
