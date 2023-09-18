@@ -2,7 +2,7 @@ import usuarioModel from '../models/Usuario.js'
 import jwt from 'jsonwebtoken'
 
 
-async function cadastrarUsuario (req , res){
+async function cadastraUsuario (req , res){
     /*
     #swagger.description = 'Endpoint para cadastrar usuário'
     #swagger.parameters['usuario'] = {
@@ -20,7 +20,7 @@ async function cadastrarUsuario (req , res){
     let usuarioBD;
     try {
         const {nome, email, senha} = req.body.usuario;
-        usuarioBD = await usuarioModel.cadastrarUsuario(nome, email, senha);
+        usuarioBD = await usuarioModel.cadastraUsuario(nome, email, senha);
     } catch (e) {
         /*#swagger.responses[500] = {
             description: 'Erro interno',
@@ -74,11 +74,8 @@ async function autenticaUsuario (req, res){
             res.status(401).json({erro:'E-mail ou senha incorreto'});
         }
     } catch (error) {
-        res.status(401).json({erro:error});
+        res.status(500).json({erro:error.message});
     }
 }
 
-
-
-
-export default {cadastrarUsuario, autenticaUsuario};
+export default {cadastraUsuario, autenticaUsuario};

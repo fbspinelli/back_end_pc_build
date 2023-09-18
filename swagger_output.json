@@ -85,12 +85,17 @@
     },
     "/atualizarListaJogos": {
       "post": {
-        "description": "",
+        "description": "Endpoint em construção, indisponivel no momento",
         "responses": {
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
       }
     },
     "/calcularPlacaDeVideo": {
@@ -117,7 +122,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
       }
     },
     "/montaPc": {
@@ -144,7 +154,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "jwt": []
+          }
+        ]
       }
     },
     "/usuario/cadastro": {
@@ -255,16 +270,9 @@
           },
           "401": {
             "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/usuario/validaToken": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
