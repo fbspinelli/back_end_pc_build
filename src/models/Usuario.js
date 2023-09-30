@@ -48,13 +48,15 @@ async function buscaUsuarioPorEmail(email){
     return results.data.items.find(usuario => usuario.email === email);
 }
 
-async function cadastrarUsuario (nome, email, senha){
+async function cadastraUsuario (nome, email, senha){
     if(! await isEmailCadastrado(email)){
         senha = bcrypt.hashSync(senha, salt);
         let user = usuario(nome, email, senha);
         let retorno;
         try {
             retorno = await axios.post(urls.postUser, user);
+            delete retorno.data.senha
+            delete retorno.data.links
         } catch (error) {
             throw 'Erro cadastrar user no BD';
         }
@@ -77,6 +79,6 @@ async function usuarioPossuiPermissao(email,senha){
     return false
 }
 
-export default {cadastrarUsuario, usuarioPossuiPermissao, buscaUsuarioPorEmail}
+export default {cadastraUsuario, usuarioPossuiPermissao, buscaUsuarioPorEmail}
 
 

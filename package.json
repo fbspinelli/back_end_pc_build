@@ -5,9 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
-    "debug": "nodemon --inspect server.js",
-    "prod": "node server.js 80",
+    "dev": "node swagger.js && nodemon server.js",
+    "debug": "node swagger.js && nodemon --inspect server.js",
+    "prod": "node swagger.js && node server.js 80",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,7 +22,9 @@
     "himalaya": "^1.1.0",
     "jsonwebtoken": "^8.5.1",
     "morgan-body": "^2.6.8",
-    "steamapi": "^2.2.0"
+    "steamapi": "^2.2.0",
+    "swagger-autogen": "^2.23.5",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

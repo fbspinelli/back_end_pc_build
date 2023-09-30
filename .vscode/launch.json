@@ -7,7 +7,7 @@
     
         {
             "name": "debug file",
-            "program": "${workspaceFolder}/src/models/Armazenamento.js",
+            "program": "${workspaceFolder}/server.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"

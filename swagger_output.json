@@ -1,0 +1,294 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API app PC build",
+    "description": "API utilizada pelo app mobile"
+  },
+  "host": "",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "",
+      "description": ""
+    }
+  ],
+  "schemes": [],
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "tokenjwt",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/montaPc": {
+      "post": {
+        "description": "Endpoint para calcular a peças necessárias com base em varios requisitos",
+        "parameters": [
+          {
+            "name": "requisitos",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "requisitos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Armazenamento": {
+                        "type": "string",
+                        "example": " 100 GB available space"
+                      },
+                      "Cpu": {
+                        "type": "string",
+                        "example": " Intel Core i5-2500K@3.3GHz or AMD FX 6300@3.5GHz"
+                      },
+                      "Gpu": {
+                        "type": "string",
+                        "example": " Nvidia GeForce GTX 780 (3 GB) or AMD Radeon R9 290 (4GB)"
+                      },
+                      "Ram": {
+                        "type": "string",
+                        "example": " 8 GB RAM"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Calculado com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "placa": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "GeForce GTX 1660"
+                    }
+                  }
+                },
+                "ram": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "8GB DDR4"
+                    }
+                  }
+                },
+                "rom": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "240GB"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro ao calcular.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "erro": {
+                  "type": "string",
+                  "example": "Menssagem."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/cadastro": {
+      "post": {
+        "description": "Endpoint para cadastrar usuário",
+        "parameters": [
+          {
+            "name": "usuario",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "usuario": {
+                  "type": "object",
+                  "properties": {
+                    "nome": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "senha": {
+                      "type": "string",
+                      "example": "senha descriptografada"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuário cadastrado com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "nome": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "erro": {
+                  "type": "string",
+                  "example": "Descrição erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuario/autentica": {
+      "post": {
+        "description": "Endpoint obter token com duração de 60 minutos",
+        "parameters": [
+          {
+            "name": "usuario",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "usuario": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "exemplo@email.com"
+                    },
+                    "senha": {
+                      "type": "string",
+                      "example": "Senha"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário autenticado com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "autenticado": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "token": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "usuario": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Usuário não autenticado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "erro": {
+                  "type": "string",
+                  "example": "E-mail ou senha incorreto"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro desconhecido",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "erro": {
+                  "type": "string",
+                  "example": "Menssagem."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 function verificaJWT(req, res, next){
+    //#swagger.security = [{"jwt": []}]
     const token = req.headers['tokenjwt'];
     if (!token){
         return res.status(401).json({ auth: false, message: 'Token não fornecido'});       
