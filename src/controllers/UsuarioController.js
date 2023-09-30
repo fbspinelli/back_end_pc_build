@@ -64,17 +64,36 @@ async function autenticaUsuario (req, res){
             /* #swagger.responses[200] = {
                     description: 'Usuário autenticado com sucesso.',
                     schema: {
-                        autenticado : true,
-                        token : 'string',
-                        usuario : { email : }
+                        "autenticado": true,
+                        "token": "string",
+                        "usuario": {
+                            "id": 0,
+                            "nome": "string",
+                            "email": "string"
+                        }
                     }
-            } */
+                } 
+            */
         }
         else{
             res.status(401).json({erro:'E-mail ou senha incorreto'});
+            /* #swagger.responses[401] = {
+                    description: 'Usuário não autenticado.',
+                    schema: {
+                        "erro": "E-mail ou senha incorreto"
+                    }
+                } 
+            */
         }
     } catch (error) {
         res.status(500).json({erro:error.message});
+        /* #swagger.responses[500] = {
+                description: 'Erro desconhecido',
+                schema: {
+                    "erro": "Menssagem."
+                }
+            } 
+        */
     }
 }
 
