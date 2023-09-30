@@ -22,53 +22,6 @@
     }
   },
   "paths": {
-    "/atualizarListaJogos": {
-      "post": {
-        "description": "Endpoint em construção, indisponivel no momento",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "jwt": []
-          }
-        ]
-      }
-    },
-    "/calcularPlacaDeVideo": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "requisitos": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "security": [
-          {
-            "jwt": []
-          }
-        ]
-      }
-    },
     "/montaPc": {
       "post": {
         "description": "Endpoint para calcular a peças necessárias com base em varios requisitos",
