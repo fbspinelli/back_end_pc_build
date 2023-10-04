@@ -3,8 +3,10 @@ import swaggerUi from 'swagger-ui-express';
 import montaPcRoutes from './MontaPcRoutes.js';
 import usuarioRoutes from './UsuarioRoutes.js';
 import swaggerFile from './../../swagger_output.json' assert { type: "json" };
+import cors from 'cors'
 
 const routes = (app) => {
+    app.use(cors())
     app.use(
         express.json(),
         montaPcRoutes,
