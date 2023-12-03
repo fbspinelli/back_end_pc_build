@@ -68,46 +68,21 @@
               "type": "object",
               "properties": {
                 "placa": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "example": "GeForce GTX 1660"
-                    }
-                  }
+                  "type": "string",
+                  "example": "GeForce GTX 1660"
                 },
                 "ram": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "example": "8GB DDR4"
-                    }
-                  }
+                  "type": "string",
+                  "example": "8GB DDR4"
                 },
                 "rom": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "example": "240GB"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Erro ao calcular.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "erro": {
                   "type": "string",
-                  "example": "Menssagem."
+                  "example": "240GB"
+                },
+                "erros": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
                 }
               },
               "xml": {

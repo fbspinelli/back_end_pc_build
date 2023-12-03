@@ -1,10 +1,11 @@
-FROM node:20.5.1
+FROM node:20-alpine
 
 WORKDIR /app
 
 COPY . .
 
 EXPOSE 80
-EXPOSE 3000
+
+RUN npm install
 
 CMD [ "npm", "run", "prod" ]
