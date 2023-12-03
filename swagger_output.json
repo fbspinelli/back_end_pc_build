@@ -22,127 +22,73 @@
     }
   },
   "paths": {
-    "/favoritaPc": {
+    "/montaPc": {
       "post": {
-        "description": "Endpoint para favoritar uma configuração montada",
+        "description": "Endpoint para calcular a peças necessárias com base em varios requisitos",
         "parameters": [
           {
-            "name": "Object",
+            "name": "requisitos",
             "in": "body",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "usuario": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "type": "string",
-                      "example": "string"
+                "requisitos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Armazenamento": {
+                        "type": "string",
+                        "example": " 100 GB available space"
+                      },
+                      "Cpu": {
+                        "type": "string",
+                        "example": " Intel Core i5-2500K@3.3GHz or AMD FX 6300@3.5GHz"
+                      },
+                      "Gpu": {
+                        "type": "string",
+                        "example": " Nvidia GeForce GTX 780 (3 GB) or AMD Radeon R9 290 (4GB)"
+                      },
+                      "Ram": {
+                        "type": "string",
+                        "example": " 8 GB RAM"
+                      }
                     }
                   }
-                },
-                "pecas": {
-                  "type": "object",
-                  "properties": {
-                    "exemplo": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                },
-                "tipo": {
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Calculado com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "placa": {
                   "type": "string",
-                  "example": "string"
+                  "example": "GeForce GTX 1660"
                 },
-                "jogos": {
-                  "type": "object",
-                  "properties": {
-                    "exemplo": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
+                "ram": {
+                  "type": "string",
+                  "example": "8GB DDR4"
+                },
+                "rom": {
+                  "type": "string",
+                  "example": "240GB"
+                },
+                "erros": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
                 }
+              },
+              "xml": {
+                "name": "main"
               }
             }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "security": [
-          {
-            "jwt": []
-          }
-        ]
-      }
-    },
-    "/atualizarListaJogos": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/calcularPlacaDeVideo": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "requisitos": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/montaPc": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "requisitos": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -251,20 +197,70 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Usuário autenticado com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "autenticado": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "token": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "usuario": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/usuario/validaToken": {
-      "post": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
+            "description": "Usuário não autenticado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "erro": {
+                  "type": "string",
+                  "example": "E-mail ou senha incorreto"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro desconhecido",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "erro": {
+                  "type": "string",
+                  "example": "Menssagem."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }

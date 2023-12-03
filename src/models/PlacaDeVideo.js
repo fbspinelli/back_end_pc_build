@@ -73,7 +73,7 @@ function retornaMelhorPlacaComCriterioLancamento (listaPlacasRequisitos){
         if (anterior.gflops < atual.gflops ) return -1;
         return 0;
     })
-    return placasAtendemCriterioAno.find((placa) => placa.gflops >= placaMaisForte.gflops )
+    return placasAtendemCriterioAno.find((placa) => placa.gflops >= placaMaisForte.gflops).gpu
 }
 
 function converteRequisitosEmArrayNomesPlacas (requisitos){
